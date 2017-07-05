@@ -23,9 +23,9 @@ class FoodStore extends EventEmitter {
     }
 
     createDish(text){
-        var _id = Date.now() + Math.floor(Math.random()*40);
+        var id = Date.now() + Math.floor(Math.random()*40);
         this.foods.push({
-            _id, 
+            id, 
             name: text,
             ingredients: []
         })
@@ -44,6 +44,17 @@ class FoodStore extends EventEmitter {
         this.emit('change');
     }
 
+    editDish(id, text){
+        var testArr = this.foods;
+        for (var i = 0; i < testArr.length; i++) {
+            if (testArr[i].id === id){
+                testArr[i].name = text;
+            } 
+        }
+        this.foods = testArr;
+        this.emit('change');
+    }
+
     handleActions(action){
         switch(action.type){
             case "CREATE_DISH":{
@@ -52,6 +63,10 @@ class FoodStore extends EventEmitter {
             }
             case "DELETE_DISH":{
                 this.deleteDish(action.text);
+                break;
+            }
+            case "EDIT_DISH":{
+                this.editDish(action.text);
                 break;
             }
             default:{

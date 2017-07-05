@@ -12,3 +12,10 @@ export function deleteDish(id) {
         text: id
     });
 }
+
+export function editDish(id, newName){
+    dispatcher.dispatch({
+        type: "EDIT_DISH",
+        text: newName
+    });
+}

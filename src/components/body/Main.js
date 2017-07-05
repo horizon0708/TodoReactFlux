@@ -129,7 +129,7 @@ export default class Main extends React.Component {
         const dish = this.state.newDish
         return (
             <div className="row">
-                <div className="col-sm-6 offset-sm-3" id="body"> wf
+                <div className="col-sm-8 offset-sm-2" id="body"> wf
                     {this.populateDishUI()}
                     <AddDishUI contentEdit={this.handleNewDishEdit} newDish={dish}
                         addDish={this.handleNewDishAdd}
