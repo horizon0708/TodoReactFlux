@@ -44,14 +44,21 @@ class FoodStore extends EventEmitter {
         this.emit('change');
     }
 
-    editDish(id, text){
-        var testArr = this.foods;
-        for (var i = 0; i < testArr.length; i++) {
-            if (testArr[i].id === id){
-                testArr[i].name = text;
+    editDish(data){
+        console.log("editing dish");
+        var id = data[0];
+        var text = data[1];
+        var Arr = this.foods;
+        for (var i = 0; i < Arr.length; i++) {
+            console.log(Arr[i].id + ":" + text)
+            if (Arr[i].id === id){
+                console.log(Arr[i].name +"1");                
+                Arr[i].name = text;
             } 
         }
-        this.foods = testArr;
+        this.foods = Arr;
+        console.log(Arr + "2");
+        console.log(this.foods + "3");
         this.emit('change');
     }
 

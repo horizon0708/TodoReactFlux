@@ -13,9 +13,9 @@ export function deleteDish(id) {
     });
 }
 
-export function editDish(id, newName){
+export function editDish(data){
     dispatcher.dispatch({
         type: "EDIT_DISH",
-        text: newName
+        text: data
     });
 }

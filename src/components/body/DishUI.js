@@ -9,8 +9,8 @@ class DishUI extends React.Component {
         super(props);
         this.state = {
             isClicked: false,
-            isEditing: true,
-            tempName: ''
+            isEditing: false,
+            tempName: 'wegewf'
         };
         this.handleClick = this.handleClick.bind(this);
         this.editStateHandler = this.editStateHandler.bind(this);
@@ -54,10 +54,14 @@ class DishUI extends React.Component {
         if (x === 13) {
             event.preventDefault();
             if (this.state.tempName.length !== 0) {
+                const dishName = this.state.tempName;
+                const dishId = props.id;
+                const dataArr = [dishId, dishName];
+                console.log("we"+ props.id);
+                FoodActions.editDish(dataArr);
                 this.setState({
                     isEditing: false
-                });
-                FoodActions.editDish(props.id, this.state.tempName)
+                });                
             }
         }
     }
@@ -66,10 +70,10 @@ class DishUI extends React.Component {
         if (this.state.isEditing) {
             const tempName = this.state.tempName;
                 return <ContentEditable
-                    html={this.state.tempName}
+                    html={tempName}
                     disabled={false}
-                    onChange={()=>this.editHandler}
-                    onKeyPress={(evt) => this.handleEditEnter(props.id, evt)}
+                    onChange={(e)=>this.editHandler(e)}
+                    onKeyPress={(evt) => this.handleEditEnter(props, evt)}
                 />
             
         } else {
@@ -78,12 +82,10 @@ class DishUI extends React.Component {
         }
     }
 
-    editStateHandler = () => {
-        console.log(this.state.isEditing);
-        
-        this.setState({ isEditing: true });
+    editStateHandler = (props, event) => {
         if (this.state.isEditing == false) {
-            this.setState({ isEditing: true });
+            this.setState({ isEditing: true, 
+            tempName: props.name });
         }
     }
 
@@ -96,7 +98,7 @@ class DishUI extends React.Component {
                     {this.dishDisplay(dish)}
                 </div>
                 <button onClick={() => this.deleteDish(id)}> delete! </button>
-                <button> Edit </button>
+                <button onClick={(event) => this.editStateHandler(dish, event)}> Edit </button>
                 {this.expand(dish)}
             </div>
         );

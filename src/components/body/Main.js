@@ -90,6 +90,7 @@ export default class Main extends React.Component {
             this.setState({ newDish: "" });
         }
     }
+    
     componentWillMount(){
       FoodStore.on("change", ()=>{
         this.setState({
