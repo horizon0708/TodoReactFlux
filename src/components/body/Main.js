@@ -13,33 +13,6 @@ var AddDishUI = require('./DishUI').addDish;
 // User Story: I can edit these recipes.
 // User Story: I can delete these recipes.
 // User Story: All new recipes I add are saved in my browser's local storage. If I refresh the page, these recipes will still be there.
-
-class Dish {
-    constructor(name, ingredients) {
-        this.name = name;
-        this.ingredients = ingredients;
-    }
-
-    add(ingredient) {
-        let ingArr = this.ingredients;
-        ingArr.push(ingredient);
-        this.ingredients = ingArr;
-    }
-    remove(ingredient) {
-        let ingArr = this.ingredients;
-        let ind = ingArr.indexOf(ingredient);
-        if (ind !== -1) {
-            ingArr.splice(ind, 1);
-            this.ingredients = ingArr;
-        }
-    }
-    edit(ingredient) {
-        let ingArr = this.ingredients;
-        let ind = ingArr.indexOf(ingredient);
-        ingArr.splice(ind, 1, ingredient)
-    }
-}
-
 const newDishMsg = 'Start typing here to add a new dish! '
 
 export default class Main extends React.Component {

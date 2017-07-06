@@ -1,11 +1,11 @@
 import React from "react";
-import Main from "./body/Main";
+import TempMain from "./body/TempMain";
 
 export default class Body extends React.Component {
     render() {
         return (
             <div>
-                <Main />               
+                <TempMain />               
             </div>
         );
     }
