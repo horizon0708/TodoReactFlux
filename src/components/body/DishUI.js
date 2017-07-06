@@ -46,7 +46,7 @@ class DishUI extends React.Component {
     }
 
     editHandler = (e) => {
-        this.setState({ tempName: e.current.value });
+        this.setState({ tempName: e.target.value });
     }
 
     handleEditEnter(props, event) {
@@ -65,14 +65,13 @@ class DishUI extends React.Component {
     dishDisplay(props) {
         if (this.state.isEditing) {
             const tempName = this.state.tempName;
-            this.setState({ tempName: props.name }, () => {
                 return <ContentEditable
-                    html='uh'
+                    html={this.state.tempName}
                     disabled={false}
-                    onChange={()=>this.editHandler()}
+                    onChange={()=>this.editHandler}
                     onKeyPress={(evt) => this.handleEditEnter(props.id, evt)}
                 />
-            });
+            
         } else {
             const name = props.name;
             return <span> {name} a </span>
