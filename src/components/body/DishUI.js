@@ -2,7 +2,7 @@ var React = require("react");
 var IngredientUI = require("./IngredientUI");
 var ContentEditable = require("react-contenteditable");
 var FoodActions = require("../../actions/FoodActions");
-
+var ReactDOM = require("react-dom");
 
 class DishUI extends React.Component {
     constructor(props) {
@@ -14,6 +14,7 @@ class DishUI extends React.Component {
         };
         this.handleClick = this.handleClick.bind(this);
         this.editStateHandler = this.editStateHandler.bind(this);
+
     }
 
     handleClick() {
@@ -23,6 +24,7 @@ class DishUI extends React.Component {
             this.setState({ isClicked: false });
         }
     }
+
 
     showIngredientsList(props) {
 
@@ -65,7 +67,7 @@ class DishUI extends React.Component {
             }
         }
     }
-
+// Refs: https://facebook.github.io/react/docs/refs-and-the-dom.html
     dishDisplay(props) {
         if (this.state.isEditing) {
             const tempName = this.state.tempName;
@@ -74,18 +76,20 @@ class DishUI extends React.Component {
                     disabled={false}
                     onChange={(e)=>this.editHandler(e)}
                     onKeyPress={(evt) => this.handleEditEnter(props, evt)}
+                    autoFocus
                 />
             
         } else {
             const name = props.name;
-            return <span> {name} a </span>
+            return <div><span> {name}  </span> <button onClick={(event) => this.editStateHandler(props, event)}> Edit </button></div>
         }
     }
 
     editStateHandler = (props, event) => {
         if (this.state.isEditing == false) {
             this.setState({ isEditing: true, 
-            tempName: props.name });
+            tempName: props.name }
+            );
         }
     }
 
@@ -98,7 +102,6 @@ class DishUI extends React.Component {
                     {this.dishDisplay(dish)}
                 </div>
                 <button onClick={() => this.deleteDish(id)}> delete! </button>
-                <button onClick={(event) => this.editStateHandler(dish, event)}> Edit </button>
                 {this.expand(dish)}
             </div>
         );
