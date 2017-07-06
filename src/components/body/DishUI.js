@@ -1,5 +1,6 @@
 var React = require("react");
-var IngredientUI = require("./IngredientUI");
+var IngredientUI = require("./IngredientUI").ingredientUI;
+var AddIngredientUI = require("./IngredientUI").addIngredient;
 var ContentEditable = require("react-contenteditable");
 var FoodActions = require("../../actions/FoodActions");
 var ReactDOM = require("react-dom");
@@ -10,10 +11,10 @@ class DishUI extends React.Component {
         this.state = {
             isClicked: false,
             isEditing: false,
-            tempName: 'wegewf'
+            tempName: ''
         };
         this.handleClick = this.handleClick.bind(this);
-        this.editStateHandler = this.editStateHandler.bind(this);
+        //this.editStateHandler = this.editStateHandler.bind(this);
 
     }
 
@@ -39,7 +40,10 @@ class DishUI extends React.Component {
 
     expand(props) {
         if (this.state.isClicked === true) {
-            return this.showIngredientsList(props.ingredients);
+            return <div>
+                    <div>{this.showIngredientsList(props.ingredients)}</div>
+                    <div><AddIngredientUI dish={props} /></div> </div>
+            
         }
     }
 

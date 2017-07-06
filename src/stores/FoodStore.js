@@ -45,20 +45,55 @@ class FoodStore extends EventEmitter {
     }
 
     editDish(data){
-        console.log("editing dish");
         var id = data[0];
         var text = data[1];
         var Arr = this.foods;
         for (var i = 0; i < Arr.length; i++) {
-            console.log(Arr[i].id + ":" + text)
             if (Arr[i].id === id){
-                console.log(Arr[i].name +"1");                
                 Arr[i].name = text;
             } 
         }
         this.foods = Arr;
-        console.log(Arr + "2");
-        console.log(this.foods + "3");
+        this.emit('change');
+    }
+
+    editIngredient(data){ // [id, index, value]
+        var foodId = data[0];
+        var ingredient = data[1];
+        var text = data[2];
+        var Arr = this.foods;
+        for (var i = 0; i < Arr.length; i++) {
+            if (Arr[i].id === foodId){
+                Arr[i]['ingredients'][ingredient] = text;
+            } 
+        }
+        this.foods = Arr;
+        this.emit('change');
+    }
+
+    addIngredient(data){ // [id, value]
+        var foodId = data[0];
+        console.log(data);
+        var text = data[1];
+        var Arr = this.foods;
+        for (var i = 0; i < Arr.length; i++) {
+            if (Arr[i].id === foodId){
+                console.log(Arr[i]);
+                Arr[i]['ingredients'].push(text);
+            } 
+        }
+        this.foods = Arr;
+        this.emit('change');
+    }
+
+    deleteIngredient(data){ // id, index
+        var foodId = data[0];
+        var index = data[1];
+        for (var i = 0; i < this.foods.length; i++) {
+            if (this.foods[i].id === foodId){
+                this.foods[i]['ingredients'].splice(index, 1);
+            } 
+        }
         this.emit('change');
     }
 
@@ -74,6 +109,18 @@ class FoodStore extends EventEmitter {
             }
             case "EDIT_DISH":{
                 this.editDish(action.text);
+                break;
+            }
+            case "ADD_INGREDIENT":{
+                this.addIngredient(action.text);
+                break;
+            }
+            case "EDIT_INGREDIENT":{
+                this.editIngredient(action.text);
+                break;
+            }
+            case "DELETE_INGREDIENT":{
+                this.deleteIngredient(action.text);
                 break;
             }
             default:{

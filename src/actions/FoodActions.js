@@ -19,3 +19,24 @@ export function editDish(data){
         text: data
     });
 }
+
+export function addIngredient(data){
+    dispatcher.dispatch({
+        type: "ADD_INGREDIENT",
+        text: data
+    });
+}
+
+export function editIngredient(data){
+    dispatcher.dispatch({
+        type: "EDIT_INGREDIENT",
+        text: data
+    });
+}
+
+export function deleteIngredient(data){
+    dispatcher.dispatch({
+        type: "DELETE_INGREDIENT",
+        text: data
+    });
+}
