@@ -11,8 +11,15 @@ export default class GenericListItem extends React.Component {
         super();
         this.state = {
             isClicked: false,
-            isEditing: false
+            isEditing: false,
+            mayExpand: true
         };
+    }
+
+    componetWillMount(){
+        if (this.props.data.taskLevel -1 > this.props.maxLevel){
+            this.setState({mayExpand: false});
+        }
     }
 
     handleItemClick = () =>
@@ -28,7 +35,7 @@ export default class GenericListItem extends React.Component {
         if (this.state.isClicked) {
             // expand to show sub-tasks (if any)
             // if expanding is disabled, return. Could probably look at the level of the prop?    
-            if (!this.props.mayExpand) { return; }
+            if (this.state.mayExpand) { 
             const subTasks = data.subtask.map((x) => {
                 var x = TaskStore.getTask(x); //filter() returns an array!!!!!
                 if (x === undefined) {
@@ -38,33 +45,34 @@ export default class GenericListItem extends React.Component {
                 return <GenericListItem data={x} key={x.id} mayExpand={false} />
             });
             return <div>
-
                 <div>{subTasks}</div>
-                <div><AddItem tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
+                <div className={StyleHelper.getTaskClassName(this.props.data.taskLevel + 1)}><AddItem  tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
             </div>
+            }
         }
     }
 
     edit(data) {
         if (this.state.isEditing) {
-            return <EditItem parentId={data.id} text={data.name} editToggle={this.editToggle.bind(this)} />
+            return <EditItem  parentId={data.id} text={data.name} editToggle={this.editToggle.bind(this)} />
         } else {
-            return <div
-                id={StyleHelper.getTaskId(data.taskLevel)}
-                className={StyleHelper.getTaskClassName(data.taskLevel)}
+            return <span
+                
                 data={data}
                 onClick={this.handleItemClick}>
-                {data.name} <DeleteItem parentId={data.id} />
-            </div>
+                {data.name} 
+            </span>
         }
     }
 
     render() {
         const data = this.props.data;
         return (
-            <div>
+            <div id={StyleHelper.getTaskId(data.taskLevel)}
+                className={StyleHelper.getTaskClassName(data.taskLevel)}>
                 {this.edit(data)}
                 <button onClick={this.handleEditClick}> Edit! </button>
+                <DeleteItem parentId={data.id} />
                 <div>{this.expand(data)}</div>
             </div>
         );
@@ -72,6 +80,6 @@ export default class GenericListItem extends React.Component {
 }
 
 GenericListItem.defaultProps = {
-    mayExpand: true
+    maxLevel: 3
 };
 

@@ -10,6 +10,20 @@ body {
 }
 
 #body{
-  background-color: blue;
+  background-color: white;
   padding: 10px 10px 10px 10px;
+}
+
+.chain-one{
+  padding-left: 10px;
+}
+
+.chain-two{
+  padding-left: 20px;
+}
+.chain-three{
+  padding-left: 30px;
+}
+.chain-four{
+  padding-left: 40px;
 }

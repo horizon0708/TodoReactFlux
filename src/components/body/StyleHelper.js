@@ -1,10 +1,16 @@
 export function getTaskClassName(int){
     switch(int){
         case 1:{
-            return ""
+            return "chain-one"
         }
         case 2:{
-            return ""
+            return "chain-two"
+        }
+        case 4:{
+            return "chain-three"
+        }
+        case 5:{
+            return "chain-four"
         }
         default:
             break;
