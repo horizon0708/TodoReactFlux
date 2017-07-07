@@ -7,7 +7,7 @@ export default class DeleteItem extends React.Component{
 
     render(){
         return (
-            <button onClick={this.handleClick}> Del {console.log(this.props.parentId)}</button>
+            <button onClick={this.handleClick}> Del</button>
         );
     }
 }

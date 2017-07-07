@@ -13,3 +13,11 @@ export function deleteTask(data){
         data: data
     });
 }
+
+export function editTask(data){
+    dispatcher.dispatch({
+        type: "EDIT_TASK",
+        data: data
+    });
+}
+

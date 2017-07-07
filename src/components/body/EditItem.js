@@ -1,12 +1,17 @@
 import React from 'react';
 import * as TaskActions from "../../actions/TaskActions";
 
-export default class AddItem extends React.Component{
+export default class EditItem 
+extends React.Component{
     constructor(){
         super();
         this.state = {
             text: ""
         }
+    }
+
+    componenetWillMount() {
+        this.setState({text: this.props.text});
     }
 
     handleChange = (e) => { 
@@ -17,19 +22,17 @@ export default class AddItem extends React.Component{
         var key = event.which || event.charCode;
         if (key === 13){
             event.preventDefault();
-            TaskActions.addTask({
-                id :  Date.now(),
+            TaskActions.editTask({
                 name: this.state.text,
-                tasklevel: this.props.tasklevel,
                 parentId: this.props.parentId
             });
-            this.setState({text: ""});
+            this.props.editToggle();
         }
     }
 
     render(){
         return(
-            <input placeholder={this.props.placeholder}
+            <input 
             onKeyPress={(event) => this.handleEnterPress(this.state.text, event)}
             value={this.state.text}
             onChange={(e)=> this.handleChange(e)}
@@ -38,11 +41,7 @@ export default class AddItem extends React.Component{
     }
 }
 
-AddItem.propTypes = {
-    tasklevel: React.PropTypes.number.isRequired,
-}
-
-AddItem.defaultProps = {
-    placeholder: "Type here to add new tasks",
-    parentId: undefined
+EditItem.propTypes = {
+    parentId: React.PropTypes.number.isRequired,
+    text: React.PropTypes.string.isRequired
 }
