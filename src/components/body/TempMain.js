@@ -3,7 +3,6 @@ import '../../App.css';
 import TaskStore from "../../stores/TaskStore";
 import GenericListItem from "./GenericListItem";
 //import * as FoodActions from "../../actions/FoodActions";
-import GenericListSubItem from './GenericListSubItem';
 
 export default class TempMain extends React.Component{
     constructor(){

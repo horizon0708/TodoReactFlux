@@ -1,7 +1,7 @@
 import React from 'react';
 import * as StyleHelper from './StyleHelper';
-import GenericListSubItem from './GenericListSubItem';
 import TaskStore from "../../stores/TaskStore";
+import DeleteItem from "./DeleteItem";
 
 
 //Utility Component
@@ -22,8 +22,12 @@ export default class GenericListItem extends React.Component {
             // if expanding is disabled, return. Could probably look at the level of the prop?    
             if (!this.props.mayExpand) { return; } 
             const subTasks = data.subtask.map((x) => {
-                var y = TaskStore.getTask(x); //filter() returns an array!!!!!
-                return <GenericListItem data={y[0]} key={y[0].id} mayExpand={false} />
+                var x = TaskStore.getTask(x); //filter() returns an array!!!!!
+                if (x === undefined){
+                    // delete subtaasks
+                    return;
+                }
+                return <GenericListItem data={x} key={x.id} mayExpand={false} />
             });
             return <div>
 
@@ -42,7 +46,7 @@ export default class GenericListItem extends React.Component {
                     data={data}
                     onClick={this.handleItemClick}
                 >
-                    {data.name}
+                    {data.name} <DeleteItem parentId={data.id} />
                 </div>
                 <div>{this.expand(data)}</div>
             </div>
