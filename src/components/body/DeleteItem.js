@@ -7,7 +7,7 @@ export default class DeleteItem extends React.Component{
 
     render(){
         return (
-            <button onClick={this.handleClick}> Del</button>
+            <i className="fa fa-trash-o" onClick={this.handleClick} />
         );
     }
 }

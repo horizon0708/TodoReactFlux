@@ -4,8 +4,6 @@ import TaskStore from "../../stores/TaskStore";
 import GenericListItem from "./GenericListItem";
 import AddItem from './AddItem';
 
-//import * as FoodActions from "../../actions/FoodActions";
-
 export default class TempMain extends React.Component{
     constructor(){
         super();
@@ -28,7 +26,7 @@ export default class TempMain extends React.Component{
         });
         return(
             <div className="row">
-                <div className="col-sm-8 offset-sm-2" id="body"> wf
+                <div className="col-sm-8 offset-sm-2" id="body"> <span id="title">The List. </span>
                     {listItems}
                     <AddItem tasklevel={0} />
                 </div>

@@ -21,3 +21,10 @@ export function editTask(data){
     });
 }
 
+export function toggleComplete(data){
+    dispatcher.dispatch({
+        type: "TOGGLE_COMPLETE",
+        data: data
+    });
+}
+

@@ -87,6 +87,16 @@ class TaskStore extends EventEmitter {
         }
         this.emit("change");
     }
+
+    toggleComplete(id){
+        this.tasks = this.tasks.map(x => {
+            if (x.id === id){
+                x.completed === true ? x.completed = false : x.completed = true;
+            }
+            return x;
+        });
+        this.emit("change");
+    }
     
     deleteTask(id) {
         let taskObj = this.getTask(id);
@@ -119,6 +129,10 @@ class TaskStore extends EventEmitter {
             }
             case "EDIT_TASK": {
                 this.editTask(action.data);
+                break;
+            }
+            case "TOGGLE_COMPLETE": {
+                this.toggleComplete(action.data);
                 break;
             }
         }

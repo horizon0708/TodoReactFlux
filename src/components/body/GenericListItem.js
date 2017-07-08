@@ -4,6 +4,7 @@ import TaskStore from "../../stores/TaskStore";
 import DeleteItem from "./DeleteItem";
 import AddItem from './AddItem';
 import EditItem from './EditItem';
+import CompleteItem from './CompleteItem';
 
 //Utility Component
 export default class GenericListItem extends React.Component {
@@ -16,9 +17,12 @@ export default class GenericListItem extends React.Component {
         };
     }
 
-    componetWillMount(){
-        if (this.props.data.taskLevel -1 > this.props.maxLevel){
-            this.setState({mayExpand: false});
+    componentWillMount(){
+        //console.log(this.props.maxLevel);
+        if (this.props.data.taskLevel  > this.props.maxLevel){
+            this.setState({mayExpand: false}, ()=>{
+            console.log(this.state.mayExpand);
+            });
         }
     }
 
@@ -44,9 +48,9 @@ export default class GenericListItem extends React.Component {
                 }
                 return <GenericListItem data={x} key={x.id} mayExpand={false} />
             });
-            return <div>
+            return <div className="box">
                 <div>{subTasks}</div>
-                <div className={StyleHelper.getTaskClassName(this.props.data.taskLevel + 1)}><AddItem  tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
+                <div><AddItem  tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
             </div>
             }
         }
@@ -56,12 +60,11 @@ export default class GenericListItem extends React.Component {
         if (this.state.isEditing) {
             return <EditItem  parentId={data.id} text={data.name} editToggle={this.editToggle.bind(this)} />
         } else {
-            return <span
-                
+            return <span><span             
                 data={data}
                 onClick={this.handleItemClick}>
                 {data.name} 
-            </span>
+            </span></span>
         }
     }
 
@@ -70,8 +73,9 @@ export default class GenericListItem extends React.Component {
         return (
             <div id={StyleHelper.getTaskId(data.taskLevel)}
                 className={StyleHelper.getTaskClassName(data.taskLevel)}>
+                <span className="tick-box"><CompleteItem parentId={data.id} /></span>
                 {this.edit(data)}
-                <button onClick={this.handleEditClick}> Edit! </button>
+                <i onClick={this.handleEditClick} className="fa fa-pencil" />
                 <DeleteItem parentId={data.id} />
                 <div>{this.expand(data)}</div>
             </div>
@@ -80,6 +84,6 @@ export default class GenericListItem extends React.Component {
 }
 
 GenericListItem.defaultProps = {
-    maxLevel: 3
+    maxLevel: 2
 };
 
