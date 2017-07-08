@@ -84,6 +84,6 @@ export default class GenericListItem extends React.Component {
 }
 
 GenericListItem.defaultProps = {
-    maxLevel: 2
+    maxLevel: 5
 };
 

@@ -67,6 +67,19 @@ class TaskStore extends EventEmitter {
         return this.tasks.filter(x => x.id === id)[0];
     }
 
+    loadLocalStorage(){
+        var local = localStorage.getItem('tasks');
+        if (local){
+            this.tasks = JSON.parse(local);
+        }
+        this.emit("change");
+    }
+
+    saveLocalStorage(data){
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
+
+    }
+
     addTask(data) {
         this.tasks.push({
             id: data.id,
@@ -133,6 +146,14 @@ class TaskStore extends EventEmitter {
             }
             case "TOGGLE_COMPLETE": {
                 this.toggleComplete(action.data);
+                break;
+            }
+            case "LOAD_DATA": {
+                this.loadLocalStorage();
+                break;
+            }
+            case "SAVE_DATA": {
+                this.saveLocalStorage();
                 break;
             }
         }

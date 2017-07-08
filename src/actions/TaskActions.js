@@ -28,3 +28,17 @@ export function toggleComplete(data){
     });
 }
 
+export function loadStoragedata(data){
+    dispatcher.dispatch({
+        type: "LOAD_DATA",
+        data: data
+    });
+}
+
+export function saveStorage(data){
+    dispatcher.dispatch({
+        type: "SAVE_DATA",
+        data: data
+    });
+}
+

@@ -3,6 +3,7 @@ import '../../App.css';
 import TaskStore from "../../stores/TaskStore";
 import GenericListItem from "./GenericListItem";
 import AddItem from './AddItem';
+import * as TaskActions from "../../actions/TaskActions";
 
 export default class TempMain extends React.Component{
     constructor(){
@@ -13,11 +14,18 @@ export default class TempMain extends React.Component{
     }
 
     componentWillMount(){
+        
         TaskStore.on("change", ()=>{
             this.setState({
                 tasks: TaskStore.getLevel(0)
+            }, () => {
+            TaskActions.saveStorage();
+                
             })
         })
+
+        TaskActions.loadStoragedata();
+        
     }
 
     render(){
