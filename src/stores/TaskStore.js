@@ -53,7 +53,9 @@ class TaskStore extends EventEmitter {
             taskLevel: 1,
             parent: 161839247
         }
-        ]
+        ];
+        this.incompleteTasks = [];
+        this.allTasks = [];
     }
     getAll() {
         return this.tasks;
@@ -72,6 +74,7 @@ class TaskStore extends EventEmitter {
         if (local){
             this.tasks = JSON.parse(local);
         }
+        this.updateIncompleteTasks();
         this.emit("change");
     }
 
@@ -98,17 +101,26 @@ class TaskStore extends EventEmitter {
                 return x;
             });
         }
+        this.updateIncompleteTasks();
         this.emit("change");
     }
 
-    toggleComplete(id){
-        this.tasks = this.tasks.map(x => {
-            if (x.id === id){
-                x.completed === true ? x.completed = false : x.completed = true;
-            }
-            return x;
-        });
+    updateIncompleteTasks() {
+        this.incompleteTasks = this.tasks.filter(x => x.completed !== true);
+        this.allTasks = this.tasks;
         this.emit("change");
+    }
+
+
+    hideCompleted(){
+        this.tasks = this.incompleteTasks;
+        this.emit("change");
+    }
+
+    showAll(){
+        this.tasks = this.allTasks;
+                this.emit("change");
+
     }
     
     deleteTask(id) {
@@ -117,6 +129,7 @@ class TaskStore extends EventEmitter {
             this.tasks = this.tasks.filter(x => x.subtask = x.subtask.filter(y => y !== id));
         }
         this.tasks = this.tasks.filter(x => x.id !== id);
+        this.updateIncompleteTasks();
         this.emit("change");
     }
     
