@@ -10,8 +10,8 @@ export default class CompleteItem
             }
         }
 
-    componenetWillMount() {
-        this.setState({ text: this.props.text });
+    componentWillMount() {
+        this.setState({ ticked: this.props.completed });
     }
 
     toggleState(){
@@ -39,7 +39,9 @@ export default class CompleteItem
 }
 
 CompleteItem.propTypes = {
-    parentId: React.PropTypes.number.isRequired
+    completed: React.PropTypes.bool.isRequired,
+        parentId: React.PropTypes.number.isRequired
+
 }
 
 

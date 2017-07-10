@@ -9,9 +9,10 @@ class TaskStore extends EventEmitter {
             id: 125123125125,
             name: "drink coffee",
             subtask: [125125123, 561636476],
-            completed: false,
+            completed: true,
             taskLevel: 0,
-            parent: undefined
+            parent: undefined,
+            expanded: false
         },
         {
             id: 161839247,
@@ -19,7 +20,8 @@ class TaskStore extends EventEmitter {
             subtask: [35481531, 268346871248],
             completed: false,
             taskLevel: 0,
-            parent: undefined
+            parent: undefined,
+            expanded: false
         },
         {
             id: 125125123,
@@ -27,7 +29,8 @@ class TaskStore extends EventEmitter {
             subtask: [],
             completed: false,
             taskLevel: 1,
-            parent: 125123125125
+            parent: 125123125125,
+            expanded: false
         },
         {
             id: 561636476,
@@ -35,7 +38,8 @@ class TaskStore extends EventEmitter {
             subtask: [],
             completed: false,
             taskLevel: 1,
-            parent: 125123125125
+            parent: 125123125125,
+            expanded: false
         },
         {
             id: 35481531,
@@ -43,7 +47,8 @@ class TaskStore extends EventEmitter {
             subtask: [],
             completed: false,
             taskLevel: 1,
-            parent: 161839247
+            parent: 161839247,
+            expanded: false
         },
         {
             id: 268346871248,
@@ -51,7 +56,8 @@ class TaskStore extends EventEmitter {
             subtask: [],
             completed: false,
             taskLevel: 1,
-            parent: 161839247
+            parent: 161839247,
+            expanded: false
         }
         ];
         this.incompleteTasks = [];
@@ -106,8 +112,8 @@ class TaskStore extends EventEmitter {
     }
 
     updateIncompleteTasks() {
-        this.incompleteTasks = this.tasks.filter(x => x.completed !== true);
-        this.allTasks = this.tasks;
+        this.allTasks = this.tasks;        
+        this.incompleteTasks = this.tasks.filter(x => x.completed === false);
         this.emit("change");
     }
 
@@ -119,8 +125,7 @@ class TaskStore extends EventEmitter {
 
     showAll(){
         this.tasks = this.allTasks;
-                this.emit("change");
-
+        this.emit("change");
     }
     
     deleteTask(id) {
@@ -129,6 +134,17 @@ class TaskStore extends EventEmitter {
             this.tasks = this.tasks.filter(x => x.subtask = x.subtask.filter(y => y !== id));
         }
         this.tasks = this.tasks.filter(x => x.id !== id);
+        this.updateIncompleteTasks();
+        this.emit("change");
+    }
+
+    toggleComplete(id){
+        this.tasks = this.tasks.map(x => {
+            if (x.id === id){
+                x.completed === true ? x.completed = false : x.completed = true;
+            }
+            return x;
+        });
         this.updateIncompleteTasks();
         this.emit("change");
     }
@@ -167,6 +183,18 @@ class TaskStore extends EventEmitter {
             }
             case "SAVE_DATA": {
                 this.saveLocalStorage();
+                break;
+            }
+            case "SHOW_ALL": {
+                this.showAll();
+                break;
+            }
+            case "HIDE_COMPLETED": {
+                this.hideCompleted();
+                break;
+            }
+            case "GET_TASK": {
+                this.getTask(action.data);
                 break;
             }
         }

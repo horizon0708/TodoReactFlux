@@ -9,7 +9,8 @@ export default class TempMain extends React.Component{
     constructor(){
         super();
         this.state = {
-            tasks: TaskStore.getLevel(0)
+            tasks: TaskStore.getLevel(0),
+            showAll: true
         }
     }
 
@@ -28,6 +29,18 @@ export default class TempMain extends React.Component{
         
     }
 
+    handleToggle = (e) => {
+        if (this.state.showAll){
+            this.setState({showAll: false }, () => {
+                TaskActions.hideCompleted();
+            });
+        } else {
+            this.setState({showAll: true }, () => {
+                TaskActions.showAll();
+            })
+        }
+    }
+
     render(){
         const listItems = this.state.tasks.map((x)=>{
             return <GenericListItem data={x} key={x.id} />
@@ -37,6 +50,7 @@ export default class TempMain extends React.Component{
                 <div className="col-sm-8 offset-sm-2" id="body"> <span id="title">The List. </span>
                     {listItems}
                     <AddItem tasklevel={0} />
+                    <p id="toggle-complete" onClick={(e)=>this.handleToggle(e)}> Toggle Completed </p>
                 </div>
             </div>
         );

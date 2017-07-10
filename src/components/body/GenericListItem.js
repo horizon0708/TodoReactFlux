@@ -23,7 +23,6 @@ export default class GenericListItem extends React.Component {
         //console.log(this.props.maxLevel);
         if (this.props.data.taskLevel  > this.props.maxLevel){
             this.setState({mayExpand: false}, ()=>{
-            console.log(this.state.mayExpand);
             });
         }
     }
@@ -100,7 +99,7 @@ export default class GenericListItem extends React.Component {
         return (
             <div id={StyleHelper.getTaskId(data.taskLevel)}
                 className={StyleHelper.getTaskClassName(data.taskLevel)}>
-                <span className="tick-box"><CompleteItem parentId={data.id} /></span>
+                <span className="tick-box"><CompleteItem parentId={data.id} completed={data.completed} /></span>
                 {this.edit(data)}
                 <i onClick={this.handleEditClick} className="fa fa-pencil" />
                 <DeleteItem parentId={data.id} />

@@ -42,3 +42,25 @@ export function saveStorage(data){
     });
 }
 
+export function showAll(data){
+    dispatcher.dispatch({
+        type: "SHOW_ALL",
+        data: data
+    });
+}
+
+export function hideCompleted(data){
+    dispatcher.dispatch({
+        type: "HIDE_COMPLETED",
+        data: data
+    });
+}
+
+export function getTask(data){
+    console.log(data);
+    dispatcher.dispatch({
+        type: "GET_TASK",
+        data: data
+    });
+}
+
