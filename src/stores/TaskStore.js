@@ -112,6 +112,10 @@ class TaskStore extends EventEmitter {
         return this.tasks;
     }
 
+    getIncomplete(){
+        return this.incompleteTasks;
+    }
+
     getLevel(int) {
         return this.tasks.filter(x => x.taskLevel === int);
     }
@@ -156,14 +160,14 @@ class TaskStore extends EventEmitter {
         this.emit("change");
     }
 
-    updateIncompleteTasks() {
-        this.allTasks = this.tasks;        
+    updateIncompleteTasks() {       
         this.incompleteTasks = this.tasks.filter(x => x.completed === false);
         this.emit("change");
     }
 
 
     hideCompleted(){
+        this.allTasks = this.tasks; 
         this.tasks = this.incompleteTasks;
         this.emit("change");
     }
