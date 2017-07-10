@@ -10,7 +10,7 @@ export default class EditItem
         }
     }
 
-    componenetWillMount() {
+    componentWillMount() {
         this.setState({ text: this.props.text });
     }
 
