@@ -70,3 +70,18 @@ export function toggleExpand(data){
     });
 }
 
+export function expandAll(data){
+    dispatcher.dispatch({
+        type: "EXPAND_ALL",
+        data: data
+    });
+}
+
+export function shrinkAll(data){
+    console.log("a");
+    dispatcher.dispatch({
+        type: "SHRINK_ALL",
+        data: data
+    });
+}
+
