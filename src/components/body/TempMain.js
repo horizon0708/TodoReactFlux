@@ -41,6 +41,13 @@ export default class TempMain extends React.Component{
         }
     }
 
+    handleExpandAll = (e) => {
+        TaskActions.expandAll();
+    }
+    handleShrinkAll = (e) => {
+        TaskActions.shrinkAll();
+    }
+
     render(){
         const listItems = this.state.tasks.map((x)=>{
             return <GenericListItem data={x} key={x.id} />
@@ -50,7 +57,9 @@ export default class TempMain extends React.Component{
                 <div className="col-sm-8 offset-sm-2" id="body"> <span id="title">The List. </span>
                     {listItems}
                     <AddItem tasklevel={0} />
-                    <p id="toggle-complete" onClick={(e)=>this.handleToggle(e)}> Toggle Completed </p>
+                    <p className="toggle-complete" onClick={(e)=>this.handleToggle(e)}> Toggle Completed </p>
+                    <p className="toggle-complete" onClick={(e)=>this.handleExpandAll(e)}> Expand All </p>
+                    <p className="toggle-complete" onClick={(e)=>this.handleShrinkAll(e)}> Shrink All </p>
                 </div>
             </div>
         );

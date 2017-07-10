@@ -194,6 +194,25 @@ class TaskStore extends EventEmitter {
         this.emit("change");
     }
 
+    expandAll(){
+        this.tasks = this.tasks.map(x => {
+            x.expanded= true;
+            return x;
+        });
+        this.updateIncompleteTasks();
+        this.emit("change");
+    }
+
+    shrinkAll(){
+        console.log("a");
+        this.tasks = this.tasks.map(x => {
+            x.expanded= false;
+            return x;
+        });
+        this.updateIncompleteTasks();
+        this.emit("change");
+    }
+
     toggleExpand(id){
         this.tasks = this.tasks.map(x => {
             if (x.id === id){
@@ -257,10 +276,20 @@ class TaskStore extends EventEmitter {
                 this.toggleExpand(action.data);
                 break;
             }
+            case "EXPAND_ALL":{
+                this.expandAll(action.data);
+                break;
+            }
+            case "SHRINK_ALL":{
+                this.shrinkAll(action.data);
+                console.log("a");
+                break;
+            }
         }
     }
 }
 
 const taskStore = new TaskStore();
+window.taskStore = taskStore;
 dispatcher.register(taskStore.handleActions.bind(taskStore));
 export default taskStore;
