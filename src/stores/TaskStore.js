@@ -70,7 +70,7 @@ class TaskStore extends EventEmitter {
         },
         {
             id: 33333332,
-            name: "Promote Paulus (late Christmas present)"
+            name: "Promote Paulus (late Christmas present)",
             subtask: [],
             completed: false,
             taskLevel: 2,
