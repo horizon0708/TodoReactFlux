@@ -1,9 +1,9 @@
 import React from 'react';
 import * as TaskActions from "../../actions/TaskActions";
 
-export default class EditItem 
-extends React.Component{
-    constructor(){
+export default class EditItem
+    extends React.Component {
+    constructor() {
         super();
         this.state = {
             text: ""
@@ -11,32 +11,43 @@ extends React.Component{
     }
 
     componenetWillMount() {
-        this.setState({text: this.props.text});
+        this.setState({ text: this.props.text });
     }
 
-    handleChange = (e) => { 
-        this.setState({text: e.target.value});
+    handleChange = (e) => {
+        this.setState({ text: e.target.value });
     }
 
-    handleEnterPress =(props, event) =>{
+    handleEnterPress = (props, event) => {
         var key = event.which || event.charCode;
-        if (key === 13){
+        if (key === 13) {
             event.preventDefault();
+            this.edit();
+        }
+    }
+
+    edit = (e) => {
+        if (this.state.text.length > 0) {
             TaskActions.editTask({
                 name: this.state.text,
                 parentId: this.props.parentId
             });
             this.props.editToggle();
+        } else {
+            this.props.editToggle();
         }
     }
 
-    render(){
-        return(
-            <input 
-            onKeyPress={(event) => this.handleEnterPress(this.state.text, event)}
-            value={this.state.text}
-            onChange={(e)=> this.handleChange(e)}
-            autoFocus /> 
+    render() {
+        return (
+            <span className="style-4">
+            <input
+                type="text"
+                onKeyPress={(event) => this.handleEnterPress(this.state.text, event)}
+                onBlur={(e) => this.edit(e)}
+                value={this.state.text}
+                onChange={(e) => this.handleChange(e)}
+                autoFocus /></span>
         );
     }
 }

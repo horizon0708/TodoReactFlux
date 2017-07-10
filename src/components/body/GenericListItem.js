@@ -4,6 +4,10 @@ import TaskStore from "../../stores/TaskStore";
 import DeleteItem from "./DeleteItem";
 import AddItem from './AddItem';
 import EditItem from './EditItem';
+import CompleteItem from './CompleteItem';
+import {VelocityComponent, VelocityTransitionGroup} from 'velocity-react';
+import * as TaskActions from "../../actions/TaskActions";
+
 
 //Utility Component
 export default class GenericListItem extends React.Component {
@@ -11,12 +15,26 @@ export default class GenericListItem extends React.Component {
         super();
         this.state = {
             isClicked: false,
-            isEditing: false
+            isEditing: false,
+            mayExpand: true
         };
     }
 
-    handleItemClick = () =>
-        this.state.isClicked ? this.setState({ isClicked: false }) : this.setState({ isClicked: true });
+    componentWillMount(){
+        //console.log(this.props.maxLevel);
+                
+        if (this.props.data.taskLevel  > this.props.maxLevel){
+            this.setState({mayExpand: false}, ()=>{
+            });
+        }
+    }
+
+    handleItemClick = (event, id) => {
+        if (this.state.mayExpand){
+        //this.state.isClicked ? this.setState({ isClicked: false }) : this.setState({ isClicked: true });
+            TaskActions.toggleExpand(id);
+        }
+    }
 
     handleEditClick = () => this.editToggle(); // abstracted to let editToggle be accessible by child components
         
@@ -24,47 +42,70 @@ export default class GenericListItem extends React.Component {
         this.state.isEditing ? this.setState({ isEditing: false }) : this.setState({ isEditing: true });
     }
 
-    expand(data) {
-        if (this.state.isClicked) {
-            // expand to show sub-tasks (if any)
-            // if expanding is disabled, return. Could probably look at the level of the prop?    
-            if (!this.props.mayExpand) { return; }
-            const subTasks = data.subtask.map((x) => {
+    // expand(data) {
+    //     if (this.state.isClicked) {
+    //         // expand to show sub-tasks (if any)
+    //         // if expanding is disabled, return. Could probably look at the level of the prop?    
+    //         if (this.state.mayExpand) { 
+    //         const subTasks = data.subtask.map((x) => {
+    //             var x = TaskStore.getTask(x); //filter() returns an array!!!!!
+    //             if (x === undefined) {
+    //                 // delete subtaasks
+    //                 return;
+    //             }
+    //             return <GenericListItem data={x} key={x.id} mayExpand={false} />
+    //         });
+    //         return <div className="box">
+    //             <div>{subTasks}</div>
+    //             <div><AddItem  tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
+    //         </div>
+    //         }
+    //     }
+    // }
+
+    expand(data) {               
+            const mapTasks = data.subtask.map((x) => {
                 var x = TaskStore.getTask(x); //filter() returns an array!!!!!
-                if (x === undefined) {
-                    // delete subtaasks
+                if (x === undefined) { // delete subtaasks               
                     return;
                 }
                 return <GenericListItem data={x} key={x.id} mayExpand={false} />
             });
-            return <div>
 
-                <div>{subTasks}</div>
-                <div><AddItem tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
-            </div>
-        }
+            const subTasks = (<div className="box">
+                <div>{mapTasks}</div>
+                <div><AddItem  tasklevel={this.props.data.taskLevel + 1} parentId={this.props.data.id} /></div>
+            </div>);
+            
+
+            return  <VelocityTransitionGroup component="div" 
+            enter={{animation: 'slideDown', duration: 100, style: {height: ''}}}
+            leave={{animation: 'slideUp', duration: 100}}>
+            {data.expanded ? subTasks : null}
+            </VelocityTransitionGroup>       
     }
 
     edit(data) {
         if (this.state.isEditing) {
-            return <EditItem parentId={data.id} text={data.name} editToggle={this.editToggle.bind(this)} />
+            return <EditItem  parentId={data.id} text={data.name} editToggle={this.editToggle.bind(this)} />
         } else {
-            return <div
-                id={StyleHelper.getTaskId(data.taskLevel)}
-                className={StyleHelper.getTaskClassName(data.taskLevel)}
+            return <span><span             
                 data={data}
-                onClick={this.handleItemClick}>
-                {data.name} <DeleteItem parentId={data.id} />
-            </div>
+                onClick={(e) => this.handleItemClick(e, data.id)}>
+                {data.name} 
+            </span></span>
         }
     }
 
     render() {
         const data = this.props.data;
         return (
-            <div>
+            <div id={StyleHelper.getTaskId(data.taskLevel)}
+                className={StyleHelper.getTaskClassName(data.taskLevel)}>
+                <span className="tick-box"><CompleteItem parentId={data.id} completed={data.completed} /></span>
                 {this.edit(data)}
-                <button onClick={this.handleEditClick}> Edit! </button>
+                <i onClick={this.handleEditClick} className="fa fa-pencil" />
+                <DeleteItem parentId={data.id} />
                 <div>{this.expand(data)}</div>
             </div>
         );
@@ -72,6 +113,6 @@ export default class GenericListItem extends React.Component {
 }
 
 GenericListItem.defaultProps = {
-    mayExpand: true
+    maxLevel: 2
 };
 

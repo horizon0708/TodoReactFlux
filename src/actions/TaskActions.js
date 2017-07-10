@@ -21,3 +21,52 @@ export function editTask(data){
     });
 }
 
+export function toggleComplete(data){
+    dispatcher.dispatch({
+        type: "TOGGLE_COMPLETE",
+        data: data
+    });
+}
+
+export function loadStoragedata(data){
+    dispatcher.dispatch({
+        type: "LOAD_DATA",
+        data: data
+    });
+}
+
+export function saveStorage(data){
+    dispatcher.dispatch({
+        type: "SAVE_DATA",
+        data: data
+    });
+}
+
+export function showAll(data){
+    dispatcher.dispatch({
+        type: "SHOW_ALL",
+        data: data
+    });
+}
+
+export function hideCompleted(data){
+    dispatcher.dispatch({
+        type: "HIDE_COMPLETED",
+        data: data
+    });
+}
+
+export function getTask(data){
+    dispatcher.dispatch({
+        type: "GET_TASK",
+        data: data
+    });
+}
+
+export function toggleExpand(data){
+    dispatcher.dispatch({
+        type: "TOGGLE_EXPAND",
+        data: data
+    });
+}
+
