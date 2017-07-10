@@ -6,6 +6,7 @@ import AddItem from './AddItem';
 import EditItem from './EditItem';
 import CompleteItem from './CompleteItem';
 import {VelocityComponent, VelocityTransitionGroup} from 'velocity-react';
+import * as TaskActions from "../../actions/TaskActions";
 
 
 //Utility Component
@@ -21,15 +22,17 @@ export default class GenericListItem extends React.Component {
 
     componentWillMount(){
         //console.log(this.props.maxLevel);
+                
         if (this.props.data.taskLevel  > this.props.maxLevel){
             this.setState({mayExpand: false}, ()=>{
             });
         }
     }
 
-    handleItemClick = () => {
+    handleItemClick = (event, id) => {
         if (this.state.mayExpand){
-        this.state.isClicked ? this.setState({ isClicked: false }) : this.setState({ isClicked: true });
+        //this.state.isClicked ? this.setState({ isClicked: false }) : this.setState({ isClicked: true });
+            TaskActions.toggleExpand(id);
         }
     }
 
@@ -60,7 +63,7 @@ export default class GenericListItem extends React.Component {
     //     }
     // }
 
-    expand(data) {   
+    expand(data) {               
             const mapTasks = data.subtask.map((x) => {
                 var x = TaskStore.getTask(x); //filter() returns an array!!!!!
                 if (x === undefined) { // delete subtaasks               
@@ -78,7 +81,7 @@ export default class GenericListItem extends React.Component {
             return  <VelocityTransitionGroup component="div" 
             enter={{animation: 'slideDown', duration: 100, style: {height: ''}}}
             leave={{animation: 'slideUp', duration: 100}}>
-            {this.state.isClicked ? subTasks : null}
+            {data.expanded ? subTasks : null}
             </VelocityTransitionGroup>       
     }
 
@@ -88,7 +91,7 @@ export default class GenericListItem extends React.Component {
         } else {
             return <span><span             
                 data={data}
-                onClick={this.handleItemClick}>
+                onClick={(e) => this.handleItemClick(e, data.id)}>
                 {data.name} 
             </span></span>
         }

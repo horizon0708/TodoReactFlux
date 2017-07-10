@@ -25,6 +25,7 @@ body {
 }
 
 #toggle-complete{
+  margin-top: 1.5em;
   margin-left: 1.5em;
   color: #d4d6d8;
 }#toggle-complete:hover{

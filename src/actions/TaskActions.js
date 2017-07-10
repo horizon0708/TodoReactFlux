@@ -57,9 +57,15 @@ export function hideCompleted(data){
 }
 
 export function getTask(data){
-    console.log(data);
     dispatcher.dispatch({
         type: "GET_TASK",
+        data: data
+    });
+}
+
+export function toggleExpand(data){
+    dispatcher.dispatch({
+        type: "TOGGLE_EXPAND",
         data: data
     });
 }

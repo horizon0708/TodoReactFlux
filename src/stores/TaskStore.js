@@ -7,43 +7,88 @@ class TaskStore extends EventEmitter {
         super();
         this.tasks = [{
             id: 125123125125,
-            name: "drink coffee",
+            name: "Conquer the World",
             subtask: [125125123, 561636476],
-            completed: true,
+            completed: false,
             taskLevel: 0,
             parent: undefined,
-            expanded: false
+            expanded: true
         },
         {
             id: 161839247,
-            name: "drink more coffee",
-            subtask: [35481531, 268346871248],
+            name: "Win GSL",
+            subtask: [222222221, 35481531, 268346871248],
             completed: false,
             taskLevel: 0,
             parent: undefined,
-            expanded: false
+            expanded: true
         },
         {
             id: 125125123,
-            name: "order it!",
-            subtask: [],
-            completed: false,
+            name: "Have a beer",
+            subtask: [333333334],
+            completed: true,
             taskLevel: 1,
             parent: 125123125125,
-            expanded: false
+            expanded: true,
+        },
+        {
+            id: 333333334,
+            name: "Maybe one more",
+            subtask: [4444444441],
+            completed: true,
+            taskLevel: 2,
+            parent: 125125123,
+            expanded: true,
+        },
+        {
+            id: 4444444441,
+            name: "Okay just one more",
+            subtask: [],
+            completed: true,
+            taskLevel: 3,
+            parent: 333333334,
+            expanded: false,
         },
         {
             id: 561636476,
-            name: "life the cup to your mouth!",
-            subtask: [],
+            name: "Invade Russia in winter",
+            subtask: [3333331,33333332],
             completed: false,
             taskLevel: 1,
             parent: 125123125125,
+            expanded: true
+        },
+        {
+            id: 3333331,
+            name: "Don't give my army adequate winter supplies",
+            subtask: [],
+            completed: false,
+            taskLevel: 2,
+            parent: 561636476,
+            expanded: false
+        },
+        {
+            id: 33333332,
+            name: "Promote Paulus (late Christmas present)"
+            subtask: [],
+            completed: false,
+            taskLevel: 2,
+            parent: 561636476,
+            expanded: false
+        },
+        {
+            id: 222222221,
+            name: "Namechange to PlaneSite",
+            subtask: [],
+            completed: true,
+            taskLevel: 1,
+            parent: 161839247,
             expanded: false
         },
         {
             id: 35481531,
-            name: "Should I really be drinking another coffee?",
+            name: "Pick Protoss",
             subtask: [],
             completed: false,
             taskLevel: 1,
@@ -52,7 +97,7 @@ class TaskStore extends EventEmitter {
         },
         {
             id: 268346871248,
-            name: "It is rather late.",
+            name: "GG",
             subtask: [],
             completed: false,
             taskLevel: 1,
@@ -148,6 +193,17 @@ class TaskStore extends EventEmitter {
         this.updateIncompleteTasks();
         this.emit("change");
     }
+
+    toggleExpand(id){
+        this.tasks = this.tasks.map(x => {
+            if (x.id === id){
+                x.expanded === true ? x.expanded = false : x.expanded = true;
+            }
+            return x;
+        });
+        this.updateIncompleteTasks();
+        this.emit("change");
+    }
     
     editTask(data) { // send parentID (of edit button), new text.
         this.tasks = this.tasks.map((x) => {
@@ -197,11 +253,14 @@ class TaskStore extends EventEmitter {
                 this.getTask(action.data);
                 break;
             }
+            case "TOGGLE_EXPAND":{
+                this.toggleExpand(action.data);
+                break;
+            }
         }
     }
 }
 
 const taskStore = new TaskStore();
-window.taskStore = taskStore;
 dispatcher.register(taskStore.handleActions.bind(taskStore));
 export default taskStore;
